@@ -1,0 +1,99 @@
+{% extends 'records/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    {% if form.instance.id %}
+        Edit Record - {{ form.instance.title }}
+    {% else %}
+        Add New Land Record
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">
+                    {% if form.instance.id %}
+                        <i class="fas fa-edit me-2"></i>Edit Land Record
+                    {% else %}
+                        <i class="fas fa-plus me-2"></i>Add New Land Record
+                    {% endif %}
+                </h3>
+            </div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ form.title|as_crispy_field }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form.category|as_crispy_field }}
+                        </div>
+                    </div>
+                    
+                    {{ form.property_address|as_crispy_field }}
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            {{ form.survey_number|as_crispy_field }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form.property_size|as_crispy_field }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form.property_type|as_crispy_field }}
+                        </div>
+                    </div>
+                    
+                    {{ form.description|as_crispy_field }}
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.document.id_for_label }}" class="form-label">
+                            {% if form.instance.document %}
+                                Replace Document
+                            {% else %}
+                                Document
+                            {% endif %}
+                        </label>
+                        {{ form.document }}
+                        <div id="documentHelp" class="form-text">
+                            Accepted formats: PDF, DOC, DOCX, JPG, JPEG, PNG (Max: 10 MB)
+                        </div>
+                        {% if form.instance.document %}
+                            <div class="mt-2">
+                                <span class="text-primary">Current document:</span> 
+                                <a href="{{ form.instance.document.url }}" target="_blank">
+                                    {{ form.instance.document.name|slice:"13:" }}
+                                </a>
+                            </div>
+                        {% endif %}
+                        {% if form.document.errors %}
+                            <div class="text-danger">
+                                {{ form.document.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group mt-4 d-flex justify-content-between">
+                        <a href="{% url 'record-list' %}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Cancel
+                        </a>
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-save me-2"></i>
+                            {% if form.instance.id %}
+                                Update Record
+                            {% else %}
+                                Save Record
+                            {% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

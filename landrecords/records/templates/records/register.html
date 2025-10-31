@@ -1,0 +1,34 @@
+{% extends 'records/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Register - Digital Land Records{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0"><i class="fas fa-user-plus me-2"></i>Register</h3>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <fieldset class="form-group">
+                        {{ form|crispy }}
+                    </fieldset>
+                    <div class="form-group mt-4">
+                        <button class="btn btn-primary w-100" type="submit">
+                            <i class="fas fa-user-plus me-2"></i>Sign Up
+                        </button>
+                    </div>
+                </form>
+                <div class="border-top pt-3 mt-4 text-center">
+                    <small class="text-muted">
+                        Already have an account? <a class="ms-2" href="{% url 'login' %}">Sign In</a>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
